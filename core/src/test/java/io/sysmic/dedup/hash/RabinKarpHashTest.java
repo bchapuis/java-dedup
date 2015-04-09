@@ -4,7 +4,7 @@ public class RabinKarpHashTest extends RollingHashTest {
 
     @Override
     public RollingHash newRollingHash() {
-        return new RabinKarpHash(255);
+        return new RabinKarpHash();
     }
 
 }

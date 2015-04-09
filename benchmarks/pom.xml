@@ -46,7 +46,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <dependencies>
         <dependency>
             <groupId>io.sysmic</groupId>
-            <artifactId>dedup</artifactId>
+            <artifactId>dedup-core</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

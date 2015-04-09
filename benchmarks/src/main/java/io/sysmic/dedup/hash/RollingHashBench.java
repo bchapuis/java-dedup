@@ -29,16 +29,57 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.sample;
+package io.sysmic.dedup.hash;
 
-import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.*;
 
-public class MyBenchmark {
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+@State(Scope.Benchmark)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Fork(1)
+public class RollingHashBench {
+
+    Random rnd = new Random(1);
+
+    byte[] init = new byte[50];
+    byte[] roll = new byte[10 * 1024 * 1024];
+
+    public RollingHashBench() {
+        rnd.nextBytes(init);
+        rnd.nextBytes(roll);
+    }
+
+    public void hash(RollingHash rh) {
+        rh.init(init);
+        for (byte b : roll) {
+            rh.roll(b);
+            rh.getValue();
+        }
+    }
 
     @Benchmark
-    public void testMethod() {
-        // This is a demo/sample template for building your JMH benchmarks. Edit as needed.
-        // Put your benchmark code here.
+    public void testRabinKarpHash() {
+        hash(new RabinKarpHash());
+    }
+
+    @Benchmark
+    public void testRandomRabinKarpHash() {
+        hash(new RandomRabinKarpHash());
+    }
+
+    @Benchmark
+    public void testCyclicHash() {
+        hash(new CyclicHash());
+    }
+
+    @Benchmark
+    public void testRSyncHash() {
+        hash(new RSyncHash());
     }
 
 }

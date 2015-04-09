@@ -56,7 +56,7 @@ public class RSyncHash extends RollingHash {
         s1 += in + charOffset;
         s2 += s1;
         buf[k] = in;
-        k = (k >= l) ? 0 : k + 1;
+        k = (k == l - 1) ? 0 : k + 1;
     }
 
     @Override

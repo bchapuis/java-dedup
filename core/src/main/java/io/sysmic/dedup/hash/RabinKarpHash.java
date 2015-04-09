@@ -8,15 +8,12 @@ public class RabinKarpHash extends RollingHash {
 
     private int h, k, l = 0;
 
-    private final int d;
-
-    public RabinKarpHash(int d) {
-        this.d = d;
-    }
+    private int d = 1;
 
     @Override
     public void reset() {
         h = k = l = 0;
+        d = 1;
     }
 
     @Override
@@ -29,15 +26,13 @@ public class RabinKarpHash extends RollingHash {
         reset();
         buf = Arrays.copyOfRange(bytes, off, len);
         l = len;
-        for (int i = l - 1; i >= 0; i--) {
-            h += bytes[i] * d;
-        }
+        for (int i = 1; i < l; i++) d = d << 1;
+        for (int i = 0; i < l; i++) h = (h << 1) + buf[i];
     }
 
     @Override
     public void roll(byte in) {
-        h -= buf[k] * d;
-        h += in * d;
+        h = ((h - buf[k] * d) << 1) + in;
         buf[k] = in;
         k = (k == l - 1) ? 0 : k + 1;
     }
