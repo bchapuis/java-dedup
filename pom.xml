@@ -1,12 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>dedup</groupId>
-    <artifactId>io.sysmic.dedup</artifactId>
+    <groupId>io.sysmic.dedup</groupId>
+    <artifactId>dedup-parent</artifactId>
+    <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
+
+    <modules>
+        <module>core</module>
+        <module>benchmarks</module>
+    </modules>
 
     <dependencies>
         <dependency>
@@ -16,5 +22,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>

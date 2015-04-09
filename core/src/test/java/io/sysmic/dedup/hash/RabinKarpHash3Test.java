@@ -1,5 +1,5 @@
 package io.sysmic.dedup.hash;
-
+/*
 public class RabinKarpHash3Test extends RollingHashTest {
 
     @Override
@@ -8,3 +8,4 @@ public class RabinKarpHash3Test extends RollingHashTest {
     }
 
 }
+*/
