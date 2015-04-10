@@ -8,37 +8,30 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
- * A two thresholds, two divisors (TTTD) chunker splits files into chunks by using a basic sliding window algorithm,
- * a minimal threshold, a maximal threshold, and a backup breakpoint mechanism that use two divisor.
- */
-public class TTTDChunker extends BitmaskChunker {
+public class BSWChunker extends BitmaskChunker {
 
     private final RollingHash rh;
 
     private final int d;
 
-    private final int ddash;
-
-    private final int tmin;
-
-    private final int tmax;
-
     private final int windowSize;
 
-    public TTTDChunker(RollingHash rh, int d, int ddash, int tmin, int tmax, int windowSize) {
+    private final int bufferSize = 8 * 1024;
+
+    public BSWChunker(RollingHash rh, int d, int windowSize) {
         this.rh = rh;
         this.d = computeBitmask(d);
-        this.ddash = computeBitmask(ddash);
-        this.tmin = tmin;
-        this.tmax = tmax;
         this.windowSize = windowSize;
     }
 
     public Iterator<ByteBuffer> chunk(final ReadableByteChannel channel) {
-         return new ChunkIterator() {
 
-            private ByteBuffer buffer = ByteBuffer.allocate(tmax);
+        return new ChunkIterator() {
+
+            private ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
+
+            // initialize output buffer
+            private ByteBuffer output = ByteBuffer.allocate(bufferSize);
 
             public boolean hasNext() {
                 try {
@@ -53,31 +46,28 @@ public class TTTDChunker extends BitmaskChunker {
             }
 
             public ByteBuffer next() {
-                 try {
+
+                try {
 
                     // fill the buffer
-                    channel.read(buffer);
+                    int bytesRead = channel.read(buffer);
 
                     // switch to read mode
                     buffer.flip();
 
                     if (buffer.hasRemaining()) {
 
-                        // initialize output buffer
-                        ByteBuffer output = ByteBuffer.allocate(tmax);
-
                         // reset the rolling hash function
                         rh.reset();
 
-                        // initialize the breakpoints
+                        // initialize the breakpoint
                         int breakpoint = 0;
-                        int backupBreakpoint = 0;
 
                         while (buffer.hasRemaining() && breakpoint == 0) {
                             byte b = buffer.get();
 
                             // initialize the rolling hash at tmin
-                            if (buffer.position() == tmin) {
+                            if (buffer.position() == windowSize) {
                                 buffer.position(buffer.position() - windowSize);
                                 byte[] window = new byte[windowSize];
                                 buffer.get(window);
@@ -85,24 +75,15 @@ public class TTTDChunker extends BitmaskChunker {
                             }
 
                             // slide the window after tmin
-                            if (buffer.position() > tmin) {
+                            if (buffer.position() > windowSize) {
                                 rh.roll(b);
                             }
 
                             // look for breakpoints from tmin
-                            if (buffer.position() >= tmin) {
+                            if (buffer.position() >= windowSize) {
                                 int hash = rh.getValue();
-
-                                if ((hash & ddash) == 0) {
-                                    backupBreakpoint = buffer.position();
-                                }
-
                                 if ((hash & d) == 0) {
                                     breakpoint = buffer.position();
-                                }
-
-                                if (!buffer.hasRemaining()) {
-                                    breakpoint = backupBreakpoint;
                                 }
                             }
 
@@ -111,30 +92,28 @@ public class TTTDChunker extends BitmaskChunker {
 
                         }
 
-                        // If no breakpoint have been found,
-                        // set a hard threshold
-                        buffer.position(0);
-                        if (breakpoint == 0) {
-                            breakpoint = buffer.remaining();
-                        }
-
-                        // Reset the position for the next round
-                        buffer.position(breakpoint);
-
-                        // Prepare the output buffer
-                        output.position(0);
-                        output.limit(breakpoint);
-
                         // compact the buffer for the next iteration
                         buffer.compact();
 
-                        return output.asReadOnlyBuffer();
+                        // switch the output to read mode
+                        output.flip();
+
+                        if (breakpoint == 0 && bytesRead != -1 && hasNext()) {
+                            output = ByteBuffer.allocate(output.capacity() + bufferSize).put(output);
+                            return next();
+                        } else {
+                            try {
+                                return output.asReadOnlyBuffer();
+                            } finally {
+                                output = ByteBuffer.allocate(bufferSize);
+                            }
+                        }
 
                     } else {
                         throw new NoSuchElementException();
                     }
                 } catch (IOException e) {
-                     throw new NoSuchElementException();
+                    throw new NoSuchElementException();
                 }
             }
 

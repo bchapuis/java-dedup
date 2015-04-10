@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * A fixed size chunker splits a byte sequence into fixed size chunks.
@@ -18,31 +19,32 @@ public class FixedSizeChunker implements Chunker {
 
     public Iterator<ByteBuffer> chunk(final ReadableByteChannel channel) {
 
-        return new ChunkIterator(channel) {
+        return new ChunkIterator() {
 
             private ByteBuffer buffer = ByteBuffer.allocate(size);
 
-            public ByteBuffer computeNext() {
-                ByteBuffer output = null;
+            public boolean hasNext() {
                 try {
-                    if (channel.read(buffer) != -1) {
-
-                        // switch to read mode
-                        buffer.flip();
-
-                        // prepare the output
-                        output = buffer;
-
-                        // reset the buffer for the next iteration
-                        buffer = ByteBuffer.allocate(size);
-
-                    } else {
-                        channel.close();
-                    }
+                    channel.read(buffer);
+                    buffer.flip();
+                    return buffer.hasRemaining();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    return false;
+                } finally {
+                    buffer.compact();
                 }
-                return output;
+            }
+
+            public ByteBuffer next() {
+                try {
+                    channel.read(buffer);
+                    buffer.flip();
+                    return buffer.asReadOnlyBuffer();
+                } catch (IOException e) {
+                    throw new NoSuchElementException();
+                } finally {
+                    buffer = ByteBuffer.allocate(size);
+                }
             }
 
         };

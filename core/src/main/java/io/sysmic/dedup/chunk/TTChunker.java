@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * A two thresholds (TT) chunker splits files into chunks by using a basic sliding window algorithm,
@@ -32,12 +33,23 @@ public class TTChunker extends BitmaskChunker {
     }
 
     public Iterator<ByteBuffer> chunk(final ReadableByteChannel channel) {
-        return new ChunkIterator(channel) {
+        return new ChunkIterator() {
 
             private ByteBuffer buffer = ByteBuffer.allocate(tmax);
 
-            public ByteBuffer computeNext() {
-                ByteBuffer output = null;
+            public boolean hasNext() {
+                try {
+                    channel.read(buffer);
+                    buffer.flip();
+                    return buffer.hasRemaining();
+                } catch (IOException e) {
+                    return false;
+                } finally {
+                    buffer.compact();
+                }
+            }
+
+            public ByteBuffer next() {
                 try {
 
                     // fill the buffer
@@ -49,7 +61,7 @@ public class TTChunker extends BitmaskChunker {
                     if (buffer.hasRemaining()) {
 
                         // initialize output buffer
-                        output = ByteBuffer.allocate(tmax);
+                        ByteBuffer output = ByteBuffer.allocate(tmax);
 
                         // reset the rolling hash function
                         rh.reset();
@@ -86,19 +98,22 @@ public class TTChunker extends BitmaskChunker {
 
                         }
 
-                        // switch the buffer to read mode
-                        output.flip();
-
                         // compact the buffer for the next iteration
                         buffer.compact();
 
+                        // switch the output to read mode
+                        output.flip();
+
+                        return output.asReadOnlyBuffer();
+
+                    } else {
+                        throw new NoSuchElementException();
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new NoSuchElementException();
                 }
-
-                return output;
             }
+
         };
     }
 
