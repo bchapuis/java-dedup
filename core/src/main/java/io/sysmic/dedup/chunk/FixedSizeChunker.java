@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 /**
  * A fixed size chunker splits a byte sequence into fixed size chunks.
  */
-public class FixedSizeChunker implements Chunker {
+public class FixedSizeChunker extends Chunker {
 
     private final int size;
 
@@ -39,7 +39,11 @@ public class FixedSizeChunker implements Chunker {
                 try {
                     channel.read(buffer);
                     buffer.flip();
-                    return buffer.asReadOnlyBuffer();
+                    if (buffer.hasRemaining()) {
+                        return buffer.asReadOnlyBuffer();
+                    } else {
+                        throw new NoSuchElementException();
+                    }
                 } catch (IOException e) {
                     throw new NoSuchElementException();
                 } finally {

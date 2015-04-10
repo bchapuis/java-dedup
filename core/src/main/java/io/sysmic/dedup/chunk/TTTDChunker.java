@@ -108,7 +108,6 @@ public class TTTDChunker extends BitmaskChunker {
 
                             // fill the output buffer
                             output.put(b);
-
                         }
 
                         // If no breakpoint have been found,

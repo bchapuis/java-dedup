@@ -51,7 +51,6 @@ public class TTChunker extends BitmaskChunker {
 
             public ByteBuffer next() {
                 try {
-
                     // fill the buffer
                     channel.read(buffer);
 
@@ -59,7 +58,6 @@ public class TTChunker extends BitmaskChunker {
                     buffer.flip();
 
                     if (buffer.hasRemaining()) {
-
                         // initialize output buffer
                         ByteBuffer output = ByteBuffer.allocate(tmax);
 
@@ -70,6 +68,7 @@ public class TTChunker extends BitmaskChunker {
                         int breakpoint = 0;
 
                         while (buffer.hasRemaining() && breakpoint == 0) {
+                            // get the next byte
                             byte b = buffer.get();
 
                             // initialize the rolling hash at tmin
@@ -95,7 +94,6 @@ public class TTChunker extends BitmaskChunker {
 
                             // fill the output buffer
                             output.put(b);
-
                         }
 
                         // compact the buffer for the next iteration

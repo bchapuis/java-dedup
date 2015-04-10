@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -54,5 +55,13 @@ public abstract class ChunkerTest {
         byte[] input = new byte[10 * 1024 * 1024];
         random.nextBytes(input);
         assertArrayEquals(input, chunkAndReassemble(input));
+    }
+
+    @Test(expected=NoSuchElementException.class)
+    public void testIndexOutOfBoundsException() {
+        byte[] input = new byte[0];
+        ReadableByteChannel data = Channels.newChannel(new ByteArrayInputStream(input));
+        Iterator<ByteBuffer> it = newChunker().chunk(data);
+        it.next();
     }
 }

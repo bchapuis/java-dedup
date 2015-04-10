@@ -1,6 +1,6 @@
 package io.sysmic.dedup.chunk;
 
-public abstract class BitmaskChunker implements Chunker {
+public abstract class BitmaskChunker extends Chunker {
 
     private int closest(int i, int l, int h) {
         return h - i < i - l ? h : l;

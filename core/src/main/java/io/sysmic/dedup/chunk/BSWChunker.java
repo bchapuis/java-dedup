@@ -3,11 +3,16 @@ package io.sysmic.dedup.chunk;
 import io.sysmic.dedup.hash.RollingHash;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * A Basic Sliding Window (BSW) chunker splits files into chunks by using a rolling hash function and a divisor.
+ */
 public class BSWChunker extends BitmaskChunker {
 
     private final RollingHash rh;
@@ -16,12 +21,17 @@ public class BSWChunker extends BitmaskChunker {
 
     private final int windowSize;
 
-    private final int bufferSize = 8 * 1024;
+    private final int bufferSize;
 
     public BSWChunker(RollingHash rh, int d, int windowSize) {
+        this(rh, d, windowSize, 8 * 1024);
+    }
+
+    public BSWChunker(RollingHash rh, int d, int windowSize, int bufferSize) {
         this.rh = rh;
         this.d = computeBitmask(d);
         this.windowSize = windowSize;
+        this.bufferSize = bufferSize;
     }
 
     public Iterator<ByteBuffer> chunk(final ReadableByteChannel channel) {
@@ -30,7 +40,6 @@ public class BSWChunker extends BitmaskChunker {
 
             private ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
 
-            // initialize output buffer
             private ByteBuffer output = ByteBuffer.allocate(bufferSize);
 
             public boolean hasNext() {
@@ -48,7 +57,6 @@ public class BSWChunker extends BitmaskChunker {
             public ByteBuffer next() {
 
                 try {
-
                     // fill the buffer
                     int bytesRead = channel.read(buffer);
 
@@ -56,7 +64,6 @@ public class BSWChunker extends BitmaskChunker {
                     buffer.flip();
 
                     if (buffer.hasRemaining()) {
-
                         // reset the rolling hash function
                         rh.reset();
 
@@ -89,7 +96,6 @@ public class BSWChunker extends BitmaskChunker {
 
                             // fill the output buffer
                             output.put(b);
-
                         }
 
                         // compact the buffer for the next iteration
