@@ -64,7 +64,7 @@ public class RollingHashBench {
 
     @Benchmark
     public void testRabinKarpHash() {
-        hash(new RabinKarpHash());
+        hash(new FastRabinKarpHash());
     }
 
     @Benchmark

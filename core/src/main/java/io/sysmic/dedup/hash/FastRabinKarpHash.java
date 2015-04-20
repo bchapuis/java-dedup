@@ -2,7 +2,7 @@ package io.sysmic.dedup.hash;
 
 import java.util.Arrays;
 
-public class RabinKarpHash extends RollingHash {
+public class FastRabinKarpHash extends RollingHash {
 
     private byte[] buf;
 

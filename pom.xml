@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.sysmic.dedup</groupId>
-    <artifactId>dedup-parent</artifactId>
+    <artifactId>dedup</artifactId>
     <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
 
