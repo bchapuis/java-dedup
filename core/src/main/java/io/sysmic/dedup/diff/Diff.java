@@ -5,53 +5,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public class DiffUtils {
+public class Diff {
 
-    private DiffUtils() {}
-
-    public interface Operation {}
-
-    public static class Equals implements Operation {
-
-        public final int lenght;
-
-        public Equals(int length) {
-            this.lenght = length;
-        }
-
-        public String toString() {
-            return "Equals(" + lenght +")";
-        }
-
-    }
-
-    public static class Insert<T> implements Operation {
-
-        public final T value;
-
-        public Insert(T value) {
-            this.value = value;
-        }
-
-        public String toString() {
-            return "Insert(" + value +")";
-        }
-
-    }
-
-    public static class Remove<T> implements Operation {
-
-        public final T value;
-
-        public Remove(T value) {
-            this.value = value;
-        }
-
-        public String toString() {
-            return "Remove(" + value +")";
-        }
-
-    }
+    private Diff() {}
 
     private static <T> int[][] matrix(List<T> x, List<T> y) {
         int m = x.size();
@@ -85,14 +41,14 @@ public class DiffUtils {
                 l += 1;
             } else if (j > 0 && (i == 0 || c[i][j-1] >= c[i-1][j])) {
                 if (l > 0) {
-                    diff.add(new Equals(l));
+                    diff.add(new Equal(l));
                     l = 0;
                 }
                 diff.add(new Insert(y.get(j-1)));
                 j -= 1;
             } else if (i > 0 && (j == 0 || c[i][j-1] < c[i-1][j])) {
                 if (l > 0) {
-                    diff.add(new Equals(l));
+                    diff.add(new Equal(l));
                     l = 0;
                 }
                 diff.add(new Remove(x.get(i-1)));
@@ -103,7 +59,7 @@ public class DiffUtils {
             }
         }
         if (l > 0) {
-            diff.add(new Equals(l));
+            diff.add(new Equal(l));
         }
         return diff;
     }
@@ -118,9 +74,9 @@ public class DiffUtils {
         Iterator<T> it = x.iterator();
         List<T> y = new ArrayList();
         for (Operation operation : diff) {
-            if (operation instanceof Equals) {
-                Equals equals = (Equals) operation;
-                for (int i = 0; i < equals.lenght; i ++) {
+            if (operation instanceof Equal) {
+                Equal equal = (Equal) operation;
+                for (int i = 0; i < equal.lenght; i ++) {
                     T elem = it.next();
                     y.add(elem);
                 }
@@ -139,7 +95,7 @@ public class DiffUtils {
     public static List<Operation> reverse(List<Operation> diff) {
         List<Operation> invert = new ArrayList<Operation>();
         for (Operation operation: diff) {
-            if (operation instanceof Equals) {
+            if (operation instanceof Equal) {
                 invert.add(operation);
             }
             if (operation instanceof Insert) {

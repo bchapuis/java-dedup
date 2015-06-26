@@ -54,7 +54,6 @@ public class TTTDChunker extends BitmaskChunker {
 
             public ByteBuffer next() {
                  try {
-
                     // fill the buffer
                     channel.read(buffer);
 
@@ -126,9 +125,7 @@ public class TTTDChunker extends BitmaskChunker {
 
                         // compact the buffer for the next iteration
                         buffer.compact();
-
                         return output.asReadOnlyBuffer();
-
                     } else {
                         throw new NoSuchElementException();
                     }
@@ -136,7 +133,6 @@ public class TTTDChunker extends BitmaskChunker {
                      throw new NoSuchElementException();
                 }
             }
-
         };
     }
 

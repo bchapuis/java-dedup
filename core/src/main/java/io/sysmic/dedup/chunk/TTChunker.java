@@ -101,9 +101,7 @@ public class TTChunker extends BitmaskChunker {
 
                         // switch the output to read mode
                         output.flip();
-
                         return output.asReadOnlyBuffer();
-
                     } else {
                         throw new NoSuchElementException();
                     }
@@ -111,7 +109,6 @@ public class TTChunker extends BitmaskChunker {
                     throw new NoSuchElementException();
                 }
             }
-
         };
     }
 

@@ -1,13 +1,13 @@
 package io.sysmic.dedup.hash;
 
 import java.util.Arrays;
-import java.util.Random;
-import static io.sysmic.dedup.hash.RandomIntegers.*;
+
+import static io.sysmic.dedup.hash.ByteHash.*;
 
 /**
- * A randomized Rabin-Karp hash function.
+ * A randomized Rabin-Karp hash function (https://github.com/lemire/rollinghashjava/).
  */
-public class RandomRabinKarpHash extends RollingHash {
+public class RabinHash extends RollingHash {
 
     private int B = 31;
 

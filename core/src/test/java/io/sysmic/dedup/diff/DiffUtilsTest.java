@@ -12,8 +12,8 @@ public class DiffUtilsTest {
     public void mustDiffAndPatch() {
         List<String> a = Arrays.asList("a", "b", "c", "d", "e");
         List<String> b = Arrays.asList("a", "f", "g", "d", "e");
-        List<DiffUtils.Operation> diff = DiffUtils.diff(a, b);
-        List<String> c = DiffUtils.patch(diff, a);
+        List<Operation> diff = Diff.diff(a, b);
+        List<String> c = Diff.patch(diff, a);
         assertEquals(b, c);
     }
 

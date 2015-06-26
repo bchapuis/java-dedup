@@ -1,12 +1,11 @@
 package io.sysmic.dedup.hash;
 
 import java.util.Arrays;
-import java.util.Random;
 
-import static io.sysmic.dedup.hash.RandomIntegers.array;
+import static io.sysmic.dedup.hash.ByteHash.array;
 
 /**
- * A cyclic polynomial hash function.
+ * A cyclic polynomial hash function (https://github.com/lemire/rollinghashjava/).
  */
 public class CyclicHash extends RollingHash {
 

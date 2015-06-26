@@ -55,7 +55,6 @@ public class BSWChunker extends BitmaskChunker {
             }
 
             public ByteBuffer next() {
-
                 try {
                     // fill the buffer
                     int bytesRead = channel.read(buffer);
@@ -122,7 +121,6 @@ public class BSWChunker extends BitmaskChunker {
                     throw new NoSuchElementException();
                 }
             }
-
         };
     }
 

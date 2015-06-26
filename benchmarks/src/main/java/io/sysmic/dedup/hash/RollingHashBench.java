@@ -64,12 +64,12 @@ public class RollingHashBench {
 
     @Benchmark
     public void testRabinKarpHash() {
-        hash(new FastRabinKarpHash());
+        hash(new TrivialHash());
     }
 
     @Benchmark
     public void testRandomRabinKarpHash() {
-        hash(new RandomRabinKarpHash());
+        hash(new RabinHash());
     }
 
     @Benchmark
