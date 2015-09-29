@@ -6,7 +6,11 @@
     <groupId>io.sysmic.dedup</groupId>
     <artifactId>dedup</artifactId>
     <packaging>pom</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <version>${global.version}</version>
+
+    <properties>
+        <global.version>0.1-SNAPSHOT</global.version>
+    </properties>
 
     <modules>
         <module>chunker</module>

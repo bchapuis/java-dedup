@@ -2,11 +2,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>io.sysmic.dedup</groupId>
         <artifactId>dedup</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>${global.version}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
+
     <artifactId>elasticsearch</artifactId>
 
     <packaging>jar</packaging>
@@ -17,9 +20,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.sysmic</groupId>
-            <artifactId>dedup-core</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <groupId>io.sysmic.dedup</groupId>
+            <artifactId>chunker</artifactId>
+            <version>${global.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
