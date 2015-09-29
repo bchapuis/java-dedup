@@ -6,10 +6,13 @@
     <groupId>io.sysmic.dedup</groupId>
     <artifactId>dedup</artifactId>
     <packaging>pom</packaging>
-    <version>${global.version}</version>
+    <version>0.1-SNAPSHOT</version>
 
     <properties>
-        <global.version>0.1-SNAPSHOT</global.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jmh.version>1.8</jmh.version>
+        <javac.target>1.6</javac.target>
+        <uberjar.name>benchmarks</uberjar.name>
     </properties>
 
     <modules>

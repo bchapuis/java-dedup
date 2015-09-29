@@ -21,7 +21,7 @@
         <dependency>
             <groupId>io.sysmic.dedup</groupId>
             <artifactId>rollinghash</artifactId>
-            <version>${global.version}</version>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
