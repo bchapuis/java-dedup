@@ -9,9 +9,19 @@
     <version>0.1-SNAPSHOT</version>
 
     <modules>
-        <module>core</module>
+        <module>chunker</module>
+        <module>diff</module>
+        <module>rollinghash</module>
+        <module>elasticsearch</module>
         <module>benchmarks</module>
     </modules>
+
+    <scm>
+        <connection>scm:git:https://github.com/bchapuis/dedup.git</connection>
+        <developerConnection>scm:git:git@github.com:bchapuis/dedup.git</developerConnection>
+        <url>https://github.com/bchapuis/dedup</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -21,4 +31,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
 </project>

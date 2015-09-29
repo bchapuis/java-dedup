@@ -31,6 +31,7 @@
 
 package io.sysmic.dedup.hash;
 
+import io.sysmic.dedup.rollinghash.*;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.Random;
