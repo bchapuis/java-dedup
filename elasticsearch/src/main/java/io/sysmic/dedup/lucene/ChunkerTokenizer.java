@@ -5,17 +5,20 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import com.google.common.io.CharStreams;
-import io.sysmic.dedup.chunk.Chunker;
-import io.sysmic.dedup.chunk.TTChunker;
-import io.sysmic.dedup.hash.RabinHash;
-import io.sysmic.dedup.util.ReaderInputStream;
+import io.sysmic.dedup.chunker.Chunker;
+import io.sysmic.dedup.chunker.TTChunker;
+import io.sysmic.dedup.rollinghash.RabinHash;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.elasticsearch.common.logging.ESLogger;
+import org.elasticsearch.common.logging.ESLoggerFactory;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
-import  org.elasticsearch.common.logging.*;
 
 // http://www.citrine.io/blog/2015/2/14/building-a-custom-analyzer-in-lucene
 
