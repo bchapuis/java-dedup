@@ -33,7 +33,7 @@
     <distributionManagement>
         <repository>
             <id>bintray</id>
-            <url>https://api.bintray.com/bchapuis/maven/dedup</url>
+            <url>https://api.bintray.com/maven/bchapuis/maven/dedup</url>
         </repository>
     </distributionManagement>
 
