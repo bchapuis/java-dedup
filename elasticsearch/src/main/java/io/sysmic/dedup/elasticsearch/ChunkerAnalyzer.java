@@ -1,4 +1,4 @@
-package io.sysmic.dedup.lucene;
+package io.sysmic.dedup.elasticsearch;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;

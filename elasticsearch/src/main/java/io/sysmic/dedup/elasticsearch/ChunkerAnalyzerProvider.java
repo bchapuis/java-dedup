@@ -1,6 +1,5 @@
 package io.sysmic.dedup.elasticsearch;
 
-import io.sysmic.dedup.lucene.ChunkerAnalyzer;
 import  org.elasticsearch.common.inject.Inject;
 import  org.elasticsearch.common.inject.assistedinject.Assisted;
 import  org.elasticsearch.common.settings.Settings;

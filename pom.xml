@@ -18,6 +18,7 @@
         <module>diff</module>
         <module>rollinghash</module>
         <module>elasticsearch</module>
+        <module>examples</module>
         <module>benchmarks</module>
     </modules>
 
