@@ -70,7 +70,7 @@ public class RollingHashBench {
 
     @Benchmark
     public void testRabinHash() {
-        hash(new RabinHash());
+        hash(new RabinKarpHash());
     }
 
     @Benchmark

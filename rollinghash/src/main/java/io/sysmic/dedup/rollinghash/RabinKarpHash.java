@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * A randomized Rabin-Karp hash function (https://github.com/lemire/rollinghashjava/).
  */
-public class RabinHash extends RollingHash {
+public class RabinKarpHash extends RollingHash {
 
     private int B = 31;
 

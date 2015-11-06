@@ -19,9 +19,9 @@ public abstract class RollingHash {
 
     public static RollingHash getInstance(String algorithm) throws NoSuchAlgorithmException {
         if (algorithm.equals("FastRabinKarp")) {
-            return new RabinHash();
+            return new RabinKarpHash();
         } else if (algorithm.equals("RandomRabinKarp")) {
-           return new RabinHash();
+           return new RabinKarpHash();
         } else if (algorithm.equals("Cyclic")) {
             return new CyclicHash();
         } else if (algorithm.equals("RSync")) {
