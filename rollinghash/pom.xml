@@ -4,7 +4,7 @@
     <parent>
         <groupId>io.sysmic.dedup</groupId>
         <artifactId>dedup</artifactId>
-        <version>0.2-SNAPSHOT</version>
+        <version>0.2</version>
     </parent>
     <artifactId>rollinghash</artifactId>
 
