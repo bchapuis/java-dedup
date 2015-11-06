@@ -4,7 +4,7 @@
     <groupId>io.sysmic.dedup</groupId>
     <artifactId>dedup</artifactId>
     <packaging>pom</packaging>
-    <version>0.2</version>
+    <version>0.3-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,7 +24,7 @@
         <connection>scm:git:https://github.com/bchapuis/dedup.git</connection>
         <developerConnection>scm:git:git@github.com:bchapuis/dedup.git</developerConnection>
         <url>https://github.com/bchapuis/dedup</url>
-        <tag>dedup-0.2</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>

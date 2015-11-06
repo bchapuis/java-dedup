@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.sysmic.dedup</groupId>
         <artifactId>dedup</artifactId>
-        <version>0.2</version>
+        <version>0.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>io.sysmic.dedup</groupId>
             <artifactId>rollinghash</artifactId>
-            <version>0.2</version>
+            <version>0.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
